@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Ezzy — Pitch Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap">
@@ -703,21 +703,171 @@
   .slide.active .wiz-step:nth-child(6) { animation-delay: 0.30s; }
 
   /* ── RESPONSIVE ─────────────────────────── */
+  /* ── TABLET (≤ 900px) ──────────────────────── */
   @media (max-width: 900px) {
-    .slide { padding: 36px 24px; }
-    #slide-2 .slide-content { grid-template-columns: 1fr; }
-    .portals-diagram { flex-direction: column; }
-    .portal-col.vendor { margin: 12px 0; }
-    .traction-grid, .scenario-detail { grid-template-columns: 1fr; }
-    .payment-layout { grid-template-columns: 1fr; }
-    .gtm-stages { grid-template-columns: 1fr 1fr; gap: 24px; }
-    .gtm-spine { display: none; }
+    .deck { zoom: 1; }
+    .slide { padding: 32px 24px; overflow-y: auto; overflow-x: hidden;
+             justify-content: flex-start; }
+    .slide:not(#slide-1) { padding-top: 64px; }
+
+    /* Brand header smaller */
+    .brand-header { height: 44px; padding: 0 18px 0 14px; border-radius: 0 0 0 14px; }
+    .brand-header img { height: 26px; }
+
+    /* Slide 1 — stack panels */
+    #slide-1 { flex-direction: column; overflow-y: auto; }
+    .title-left {
+      width: 100%; min-height: auto;
+      padding: 32px 28px 28px;
+      border-radius: 0; flex-direction: row;
+      flex-wrap: wrap; gap: 20px;
+      justify-content: space-between; align-items: center;
+    }
+    .title-left::after { display: none; }
+    .title-left-inner { display: flex; flex-wrap: wrap; gap: 16px; width: 100%; align-items: center; }
+    .logo-mark { margin-bottom: 0; }
+    .title-tag { margin-bottom: 0; }
+    .title-stats-dark { flex-direction: row; flex-wrap: wrap; gap: 14px; margin-top: 0; }
+    .title-stat-dark { flex-direction: row; }
+    .title-dark-tagline { display: none; }
+    .title-right { padding: 28px 28px 40px; width: 100%; }
+    .title-right svg { display: none; }
+
+    /* Typography */
+    h1, #slide-1 h1 { font-size: clamp(26px, 7vw, 38px); }
+    h2 { font-size: clamp(22px, 5.5vw, 32px); }
+    h3 { font-size: 15px; }
+
+    /* Slide 2 */
+    #slide-2 .slide-content { grid-template-columns: 1fr; gap: 24px; }
+
+    /* Slide 3 portals */
+    .portals-diagram { flex-direction: column; gap: 20px; }
+    .portal-col.vendor { margin: 0; }
+
+    /* Slide 5 wizard */
     .wiz-grid { grid-template-columns: 1fr 1fr; }
+
+    /* Slide 6 & 7 — SVG panels, allow horizontal scroll */
+    #slide-6 .features-svg-wrap,
+    #slide-7 .features-svg-wrap {
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+    }
+    #slide-6 .features-svg-wrap svg,
+    #slide-7 .features-svg-wrap svg {
+      min-width: 700px;
+    }
+
+    /* Slide 8 payments */
+    .payment-layout { grid-template-columns: 1fr; gap: 16px; }
+    .payment-side { align-items: center !important; }
+
+    /* Slide 9 GTM */
+    .gtm-header-row { flex-direction: column; gap: 6px; align-items: flex-start; }
+    .gtm-open-note { display: none; }
+    .gtm-stages { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .gtm-spine { display: none; }
+    .gtm-stage { padding: 0 4px; }
+
+    /* Slide 10 mono */
     .mono-model { flex-direction: column; align-items: center; }
-    .vision-pillars { flex-wrap: wrap; }
-    h1 { font-size: 34px; } h2 { font-size: 26px; }
+
+    /* Slide 11 traction */
+    .traction-grid { grid-template-columns: 1fr; }
+
+    /* Slide 12 vision */
+    #slide-11 { justify-content: flex-start; padding-top: 64px; }
+    .vision-pillars { flex-wrap: wrap; gap: 8px; }
+    .closing-line { font-size: 13px; margin-top: 20px; }
+
+    /* Scenario detail */
+    .scenario-detail { grid-template-columns: 1fr; }
+
+    /* Nav */
     .nav-dots { display: none; }
-    .nav-arrows { right: 16px; }
+    .nav-arrows { right: 50%; transform: translateX(50%); bottom: 14px; gap: 20px; }
+    .slide-counter { left: 50%; transform: translateX(-50%); bottom: 16px; }
+  }
+
+  /* ── MOBILE (≤ 480px) ──────────────────────── */
+  @media (max-width: 480px) {
+    .deck { zoom: 1; }
+    .slide { padding: 16px 16px 60px; }
+    .slide:not(#slide-1) { padding-top: 56px; }
+
+    /* Brand header */
+    .brand-header { height: 40px; padding: 0 14px 0 12px; border-radius: 0 0 0 12px; }
+    .brand-header img { height: 22px; }
+
+    /* Slide 1 — compact blue band on top */
+    .title-left { padding: 20px 16px; gap: 12px; }
+    .title-stats-dark { gap: 10px; }
+    .tsd-num { font-size: 18px; min-width: 36px; }
+    .tsd-label { font-size: 10px; }
+    .title-right { padding: 20px 16px 32px; }
+    .title-cta { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .title-cta-primary { font-size: 13px; padding: 10px 22px; }
+
+    /* Typography */
+    h1, #slide-1 h1 { font-size: clamp(22px, 8vw, 32px); }
+    h2 { font-size: clamp(18px, 6vw, 26px); }
+    p, .lead { font-size: 13px; }
+    .eyebrow { font-size: 10px; }
+
+    /* Slide 2 */
+    .problem-card { padding: 14px 14px; gap: 10px; }
+    .problem-card h3 { font-size: 13px; }
+    .problem-card p { font-size: 11px; }
+
+    /* Slide 3 portals */
+    .portal-col { padding: 16px 14px; }
+    .portal-features li { font-size: 11px; }
+
+    /* Slide 4 SVG diagram — allow scroll */
+    #slide-4 .slide-content { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    #slide-4 svg { min-width: 560px; }
+
+    /* Slide 5 wizard */
+    .wiz-grid { grid-template-columns: 1fr; }
+    .wiz-step { padding: 10px 12px; }
+    .wiz-brand-teaser { flex-direction: column; gap: 8px; align-items: flex-start; }
+    .wbt-tag { align-self: flex-start; }
+
+    /* Slide 6 & 7 SVG panels */
+    #slide-6 .features-svg-wrap svg,
+    #slide-7 .features-svg-wrap svg { min-width: 860px; }
+
+    /* Slide 8 payments */
+    .payment-pill { font-size: 11px; padding: 7px 14px; }
+    .checkout-box { padding: 16px 20px; min-width: 0; width: 100%; }
+
+    /* Slide 9 GTM */
+    .gtm-stages { grid-template-columns: 1fr; gap: 16px; }
+    .gtm-graphic { width: 52px; height: 52px; }
+    .gtm-stage h3 { font-size: 14px; }
+    .gtm-stage-desc { font-size: 11px; }
+    .gtm-unlock { font-size: 10px; }
+
+    /* Slide 10 mono */
+    .mono-card { max-width: 100%; width: 100%; padding: 20px 18px; }
+
+    /* Slide 11 traction */
+    .traction-card { padding: 14px 16px; gap: 10px; }
+    .tc-icon-wrap { width: 36px; height: 36px; }
+    .traction-hero { padding: 14px 16px; gap: 12px; }
+
+    /* Slide 12 vision */
+    #slide-11 h1 { font-size: clamp(20px, 7vw, 28px); }
+    .vision-pill { font-size: 11px; padding: 9px 14px; }
+    .vision-pill svg { width: 14px; height: 14px; }
+
+    /* Scenario detail */
+    .detail-card { padding: 12px 14px; }
+
+    /* Nav */
+    .nav-arrows { bottom: 10px; }
+    .slide-counter { bottom: 12px; font-size: 10px; }
+    .arrow-btn { width: 36px; height: 36px; font-size: 14px; }
   }
 </style>
 </head>
@@ -2234,6 +2384,8 @@
     dotsContainer.children[current].classList.add('active');
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
     syncHeader();
+    // Reset scroll on every slide so content starts at top
+    slides.forEach(s => { s.scrollTop = 0; });
   }
 
   document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
@@ -2243,6 +2395,21 @@
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
   });
+
+  // Touch swipe support
+  let touchStartX = 0, touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) {
+      if (dx < 0) goTo(current + 1);
+      else        goTo(current - 1);
+    }
+  }, { passive: true });
 
   // init counter + header state
   counter.textContent = `01 / ${String(slides.length).padStart(2,'0')}`;
