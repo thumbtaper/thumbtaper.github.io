@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EzzyBook — Pitch Deck</title>
+<title>Ezzy — Pitch Deck</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap">
 <style>
@@ -22,6 +22,10 @@
     --teal:    #0D9488;
     --card:    #FFFFFF;
     --shadow:  0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04);
+    /* Title slide dark panel */
+    --title-dark: #0C1A3A;
+    --title-mid:  #112355;
+    --title-acc:  #1A56FF;
   }
 
   html, body {
@@ -31,6 +35,7 @@
     font-family: 'Inter', sans-serif;
     overflow: hidden;
   }
+
 
   /* ── SLIDE SYSTEM ──────────────────────── */
   .deck { width: 100%; height: 100%; position: relative; zoom: 1.2 }
@@ -45,6 +50,35 @@
     background: var(--bg);
   }
   .slide.active { opacity: 1; pointer-events: all; }
+
+  /* ── BRAND HEADER (top-right, every slide) ── */
+  .brand-header {
+    position: fixed;
+    top: 0; right: 0;
+    height: 52px;
+    padding: 0 28px 0 20px;
+    background: #0C1A3A;
+    display: flex; align-items: center;
+    border-radius: 0 0 0 18px;
+    z-index: 200;
+    box-shadow: -2px 2px 16px rgba(0,0,0,0.18);
+  }
+  .brand-header img {
+    height: 32px;
+    mix-blend-mode: screen;
+    filter: brightness(1.1) saturate(1.05);
+    display: block;
+  }
+  /* Hide on slide-1: it already has the logo in the left panel */
+  #slide-1.active ~ * .brand-header,
+  .slide.active#slide-1 ~ .brand-header { display: none; }
+
+  /* Slides 2-12: leave room for the brand header at top
+     and align content to start rather than center */
+  .slide:not(#slide-1) {
+    justify-content: center;
+    padding-top: 72px;
+  }
 
   /* ── NAVIGATION ────────────────────────── */
   .nav-dots {
@@ -148,35 +182,152 @@
   .fi-ink   { background: #F3F4F6; }
 
   /* ======================================
-     SLIDE 1 — TITLE
+     SLIDE 1 — TITLE (split horizon layout)
   ====================================== */
-  #slide-1 { text-align: center; }
-  .logo-mark { display: flex; align-items: center; gap: 12px; margin-bottom: 36px; }
-  .logo-icon {
-    width: 48px; height: 48px; border-radius: 12px;
-    background: var(--coral);
-    display: flex; align-items: center; justify-content: center;
+  #slide-1 {
+    padding: 0;
+    flex-direction: row;
+    align-items: stretch;
+    background: #F7F6F3;
   }
-  .logo-text {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px; font-weight: 800;
-    letter-spacing: -0.02em; color: var(--ink);
+
+  /* LEFT panel — deep brand blue */
+  .title-left {
+    width: 38%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 56px 48px 56px 64px;
+    background: #0C1A3A;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
   }
+
+  /* Curved right edge on the dark panel */
+  .title-left::after {
+    content: '';
+    position: absolute;
+    top: 0; right: -60px; bottom: 0;
+    width: 120px;
+    background: #0C1A3A;
+    border-radius: 0 120px 120px 0;
+    z-index: 2;
+  }
+
+  /* Decorative circle art inside dark panel */
+  .title-left-art {
+    position: absolute;
+    inset: 0; pointer-events: none; z-index: 1;
+    overflow: hidden;
+  }
+
+  .title-left-inner {
+    position: relative; z-index: 3;
+  }
+
+  .logo-mark {
+    display: flex; align-items: center;
+    gap: 0; margin-bottom: 48px;
+  }
+  .logo-mark img {
+    height: 52px;
+    /* White bg drop: multiply blends white to transparent on any bg,
+       but for dark bg we invert then multiply via screen */
+    mix-blend-mode: screen;
+    filter: brightness(1.15) saturate(1.1);
+  }
+
+  /* Tag on dark panel */
   .title-tag {
     display: inline-flex; align-items: center; gap: 8px;
-    background: #FFFBEB; border: 1px solid #FDE68A;
+    background: rgba(26,86,255,0.25);
+    border: 1px solid rgba(79,142,247,0.45);
     padding: 5px 14px; border-radius: 100px;
-    font-size: 12px; color: var(--gold); font-weight: 500; margin-bottom: 28px;
+    font-size: 11px; color: #A5C4FF; font-weight: 500;
+    margin-bottom: 32px; letter-spacing: 0.04em;
   }
-  .title-tag::before { content: '●'; font-size: 7px; }
-  #slide-1 h1 { margin-bottom: 20px; }
-  .title-sub { font-size: 18px; color: var(--muted); max-width: 540px; margin: 0 auto 44px; line-height: 1.5; }
-  .title-stats { display: flex; gap: 44px; margin-top: 8px; }
-  .title-stat span:first-child {
-    display: block; font-family: 'Syne', sans-serif;
-    font-size: 28px; font-weight: 700; color: var(--coral);
+  .title-tag::before { content: '●'; font-size: 7px; color: #4F8EF7; }
+
+  /* Dark panel tagline */
+  .title-dark-tagline {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; color: rgba(255,255,255,0.45);
+    line-height: 1.6; max-width: 260px;
+    margin-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px;
   }
-  .title-stat span:last-child { font-size: 12px; color: var(--muted); }
+
+  /* Stat pills on dark panel */
+  .title-stats-dark {
+    display: flex; flex-direction: column; gap: 12px;
+    margin-top: 36px;
+  }
+  .title-stat-dark {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .tsd-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700;
+    color: #4F8EF7; min-width: 44px;
+  }
+  .tsd-label {
+    font-size: 12px; color: rgba(255,255,255,0.5);
+    line-height: 1.3;
+  }
+  .tsd-divider {
+    width: 1px; height: 28px;
+    background: rgba(255,255,255,0.12);
+  }
+
+  /* RIGHT panel — warm white content */
+  .title-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 64px 72px 64px 96px;
+    position: relative;
+  }
+
+  #slide-1 h1 {
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 520px;
+  }
+  .title-sub {
+    font-size: 17px; color: var(--muted);
+    max-width: 480px; line-height: 1.6;
+    margin: 0 0 40px 0;
+  }
+
+  /* CTA row on right */
+  .title-cta {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .title-cta-primary {
+    background: var(--coral); color: white;
+    font-size: 14px; font-weight: 600;
+    padding: 12px 28px; border-radius: 100px;
+    letter-spacing: 0.01em;
+  }
+  .title-cta-secondary {
+    font-size: 13px; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .title-cta-secondary::before { content: '→'; color: var(--coral); }
+
+  /* Slide 1 old h1 override */
+  #slide-1 h1 {
+    font-size: clamp(32px, 4.2vw, 58px);
+    font-weight: 700; line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--ink); text-align: left;
+  }
 
   /* ======================================
      SLIDE 2 — PROBLEM
@@ -227,7 +378,7 @@
   .portal-features li::before { content: '–'; position: absolute; left: 0; color: #CBD5E1; }
   .backbone {
     text-align: center; margin-top: 16px; padding: 11px 22px;
-    border-radius: 8px; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
     font-size: 12px; color: var(--muted);
   }
   .backbone strong { color: var(--ink); }
@@ -578,84 +729,123 @@
        SLIDE 1: TITLE
   ─────────────────────────────────── -->
   <div class="slide active" id="slide-1">
-    <!-- ── Decorative artwork ── -->
-    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <!-- Coral accent shape — top-right -->
-      <rect x="1040" y="-60" width="220" height="220" rx="36" fill="#F04E23" opacity="0.08" transform="rotate(18 1150 50)"/>
-      <rect x="1080" y="-30" width="160" height="160" rx="28" fill="#F04E23" opacity="0.07" transform="rotate(18 1160 50)"/>
-      <!-- Blue accent — bottom-left -->
-      <rect x="-80" y="520" width="200" height="200" rx="36" fill="#2563EB" opacity="0.06" transform="rotate(-14 20 620)"/>
-      <!-- Gold dot cluster — right mid -->
-      <circle cx="1140" cy="380" r="6" fill="#D97706" opacity="0.25"/>
-      <circle cx="1158" cy="362" r="4" fill="#D97706" opacity="0.18"/>
-      <circle cx="1126" cy="356" r="3" fill="#D97706" opacity="0.15"/>
-      <circle cx="1150" cy="402" r="5" fill="#D97706" opacity="0.18"/>
-      <!-- Dot grid left -->
-      <g opacity="0.08">
-        <circle cx="60" cy="180" r="2.5" fill="#374151"/>
-        <circle cx="90" cy="180" r="2.5" fill="#374151"/>
-        <circle cx="120" cy="180" r="2.5" fill="#374151"/>
-        <circle cx="60" cy="210" r="2.5" fill="#374151"/>
-        <circle cx="90" cy="210" r="2.5" fill="#374151"/>
-        <circle cx="120" cy="210" r="2.5" fill="#374151"/>
-        <circle cx="60" cy="240" r="2.5" fill="#374151"/>
-        <circle cx="90" cy="240" r="2.5" fill="#374151"/>
-        <circle cx="120" cy="240" r="2.5" fill="#374151"/>
-        <circle cx="60" cy="270" r="2.5" fill="#374151"/>
-        <circle cx="90" cy="270" r="2.5" fill="#374151"/>
-        <circle cx="120" cy="270" r="2.5" fill="#374151"/>
-      </g>
-      <!-- Floating booking card art — right side -->
-      <g transform="translate(900, 160)">
-        <rect x="0" y="0" width="190" height="72" rx="12" fill="white" stroke="#E5E7EB" stroke-width="1"/>
-        <rect x="12" y="14" width="28" height="28" rx="7" fill="#EFF6FF"/>
-        <rect x="16" y="18" width="20" height="20" rx="5" fill="#2563EB" opacity="0.15"/>
-        <rect x="50" y="16" width="80" height="9" rx="4" fill="#374151" opacity="0.18"/>
-        <rect x="50" y="30" width="56" height="7" rx="3" fill="#6B7280" opacity="0.15"/>
-        <rect x="50" y="42" width="38" height="7" rx="3" fill="#F04E23" opacity="0.3"/>
-        <rect x="136" y="42" width="42" height="16" rx="8" fill="#F04E23"/>
-        <rect x="143" y="46" width="28" height="8" rx="4" fill="white" opacity="0.8"/>
-      </g>
-      <g transform="translate(920, 252)">
-        <rect x="0" y="0" width="168" height="58" rx="10" fill="white" stroke="#E5E7EB" stroke-width="1"/>
-        <rect x="10" y="11" width="22" height="22" rx="6" fill="#FFFBEB"/>
-        <rect x="13" y="14" width="16" height="16" rx="4" fill="#D97706" opacity="0.2"/>
-        <rect x="42" y="13" width="70" height="8" rx="3" fill="#374151" opacity="0.16"/>
-        <rect x="42" y="25" width="50" height="6" rx="3" fill="#6B7280" opacity="0.13"/>
-        <rect x="42" y="36" width="30" height="11" rx="5" fill="#D97706" opacity="0.18"/>
-      </g>
-      <g transform="translate(876, 330)">
-        <rect x="0" y="0" width="212" height="64" rx="11" fill="white" stroke="#E5E7EB" stroke-width="1"/>
-        <rect x="12" y="12" width="24" height="24" rx="7" fill="#F0FDFA"/>
-        <rect x="15" y="15" width="18" height="18" rx="5" fill="#0D9488" opacity="0.2"/>
-        <rect x="46" y="14" width="88" height="9" rx="4" fill="#374151" opacity="0.16"/>
-        <rect x="46" y="27" width="60" height="7" rx="3" fill="#6B7280" opacity="0.12"/>
-        <rect x="46" y="38" width="42" height="8" rx="4" fill="#0D9488" opacity="0.18"/>
-        <rect x="152" y="36" width="48" height="18" rx="9" fill="#F04E23"/>
-        <rect x="160" y="40" width="32" height="10" rx="5" fill="white" opacity="0.8"/>
-      </g>
-      <!-- Connector lines between floating cards -->
-      <line x1="1090" y1="232" x2="1088" y2="252" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
-      <line x1="1088" y1="310" x2="1087" y2="330" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
-    </svg>
-    <div><img src="logo.png" /></div>
-    <div class="title-tag">Coming to the Philippines</div>
-    <h1>Book any service.<br><span class="accent">Any vendor.</span><br>One checkout.</h1>
-    <p class="title-sub" style="margin-top:24px;">A vertical-agnostic booking marketplace connecting service vendors and customers — discovery, scheduling, requirements, and payment in a single guided flow.</p>
-    <div class="title-stats">
-      <div class="title-stat">
-        <span>3</span>
-        <span>Purpose-built portals</span>
-      </div>
-      <div class="title-stat">
-        <span>6</span>
-        <span>Step booking wizard</span>
-      </div>
-      <div class="title-stat">
-        <span>6+</span>
-        <span>Payment methods live</span>
+
+    <!-- ══ LEFT PANEL — deep blue brand ══ -->
+    <div class="title-left">
+
+      <!-- Decorative geometry inside dark panel -->
+      <svg class="title-left-art" viewBox="0 0 500 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <!-- Large faint circle top-right -->
+        <circle cx="480" cy="120" r="280" fill="none" stroke="rgba(79,142,247,0.12)" stroke-width="1.5"/>
+        <circle cx="480" cy="120" r="200" fill="none" stroke="rgba(79,142,247,0.08)" stroke-width="1"/>
+        <!-- Accent dot cluster top-left -->
+        <circle cx="40"  cy="60"  r="4" fill="rgba(26,86,255,0.45)"/>
+        <circle cx="58"  cy="48"  r="3" fill="rgba(26,86,255,0.3)"/>
+        <circle cx="30"  cy="80"  r="2.5" fill="rgba(26,86,255,0.25)"/>
+        <!-- Bottom faint circle -->
+        <circle cx="80"  cy="820" r="220" fill="none" stroke="rgba(79,142,247,0.08)" stroke-width="1"/>
+        <!-- Subtle grid dots -->
+        <g opacity="0.07">
+          <circle cx="340" cy="700" r="2.5" fill="white"/>
+          <circle cx="360" cy="700" r="2.5" fill="white"/>
+          <circle cx="380" cy="700" r="2.5" fill="white"/>
+          <circle cx="340" cy="720" r="2.5" fill="white"/>
+          <circle cx="360" cy="720" r="2.5" fill="white"/>
+          <circle cx="380" cy="720" r="2.5" fill="white"/>
+          <circle cx="340" cy="740" r="2.5" fill="white"/>
+          <circle cx="360" cy="740" r="2.5" fill="white"/>
+          <circle cx="380" cy="740" r="2.5" fill="white"/>
+        </g>
+        <!-- Diagonal accent line -->
+        <line x1="0" y1="500" x2="160" y2="340" stroke="rgba(26,86,255,0.18)" stroke-width="1" stroke-dasharray="6 5"/>
+        <!-- Small solid accent square -->
+        <rect x="380" y="820" width="80" height="80" rx="18" fill="rgba(26,86,255,0.18)" transform="rotate(18 420 860)"/>
+      </svg>
+
+      <div class="title-left-inner">
+        <!-- Logo -->
+        <div class="logo-mark">
+          <img src="data:image/png;base64,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" style="height:52px; mix-blend-mode:screen; filter:brightness(1.1) saturate(1.05);" alt="Ezzy"/>
+        </div>
+
+        <!-- Status tag -->
+        <div class="title-tag">Launching in the Philippines</div>
+
+        <!-- Stats stacked vertically -->
+        <div class="title-stats-dark">
+          <div class="title-stat-dark">
+            <div class="tsd-num">3</div>
+            <div class="tsd-divider"></div>
+            <div class="tsd-label">Purpose-built<br>portals</div>
+          </div>
+          <div class="title-stat-dark">
+            <div class="tsd-num">6</div>
+            <div class="tsd-divider"></div>
+            <div class="tsd-label">Step booking<br>wizard</div>
+          </div>
+          <div class="title-stat-dark">
+            <div class="tsd-num">6+</div>
+            <div class="tsd-divider"></div>
+            <div class="tsd-label">Payment methods<br>live today</div>
+          </div>
+        </div>
+
+        <div class="title-dark-tagline">
+          Vendor-to-customer. Commission on every booking. Built for the Philippines.
+        </div>
       </div>
     </div>
+
+    <!-- ══ RIGHT PANEL — warm white content ══ -->
+    <div class="title-right">
+      <!-- Subtle artwork top-right of white panel -->
+      <svg style="position:absolute;top:0;right:0;width:55%;height:55%;pointer-events:none;opacity:0.6" viewBox="0 0 600 400" preserveAspectRatio="xMaxYMin meet" aria-hidden="true">
+        <rect x="440" y="-40" width="200" height="200" rx="40" fill="#F04E23" opacity="0.06" transform="rotate(18 540 60)"/>
+        <rect x="490" y="-10" width="140" height="140" rx="30" fill="#F04E23" opacity="0.04" transform="rotate(18 560 60)"/>
+        <circle cx="560" cy="320" r="5" fill="#D97706" opacity="0.3"/>
+        <circle cx="578" cy="306" r="3.5" fill="#D97706" opacity="0.2"/>
+        <circle cx="546" cy="302" r="2.5" fill="#D97706" opacity="0.18"/>
+      </svg>
+
+      <h1>Book any service.<br><span class="accent">Any vendor.</span><br>One checkout.</h1>
+      <p class="title-sub">A vertical-agnostic booking marketplace — discovery, scheduling, requirements, and payment in a single guided flow.</p>
+
+      <div class="title-cta">
+        <div class="title-cta-primary">See how it works</div>
+        <div class="title-cta-secondary">Working MVP · Live paid bookings</div>
+      </div>
+
+      <!-- Floating booking card art -->
+      <svg style="position:absolute;bottom:48px;right:56px;pointer-events:none" width="220" height="200" viewBox="0 0 220 200" aria-hidden="true">
+        <!-- Card 1 -->
+        <rect x="20" y="0" width="188" height="68" rx="12" fill="white" stroke="#E5E7EB" stroke-width="1" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.06))"/>
+        <rect x="32" y="14" width="28" height="28" rx="7" fill="#EFF6FF"/>
+        <rect x="36" y="18" width="20" height="20" rx="5" fill="#2563EB" opacity="0.15"/>
+        <rect x="70" y="16" width="76" height="8" rx="4" fill="#374151" opacity="0.18"/>
+        <rect x="70" y="28" width="54" height="6" rx="3" fill="#6B7280" opacity="0.15"/>
+        <rect x="70" y="38" width="36" height="7" rx="3" fill="#F04E23" opacity="0.3"/>
+        <rect x="154" y="38" width="42" height="18" rx="9" fill="#F04E23"/>
+        <rect x="161" y="43" width="28" height="8" rx="4" fill="white" opacity="0.85"/>
+        <!-- Card 2 -->
+        <rect x="0" y="80" width="168" height="56" rx="10" fill="white" stroke="#E5E7EB" stroke-width="1" filter="drop-shadow(0 2px 8px rgba(0,0,0,0.05))"/>
+        <rect x="10" y="92" width="22" height="22" rx="6" fill="#FFFBEB"/>
+        <rect x="13" y="95" width="16" height="16" rx="4" fill="#D97706" opacity="0.2"/>
+        <rect x="40" y="94" width="68" height="7" rx="3" fill="#374151" opacity="0.16"/>
+        <rect x="40" y="105" width="48" height="6" rx="3" fill="#6B7280" opacity="0.12"/>
+        <rect x="40" y="115" width="30" height="10" rx="5" fill="#D97706" opacity="0.18"/>
+        <!-- Connector line -->
+        <line x1="104" y1="68" x2="96" y2="80" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Card 3 mini -->
+        <rect x="30" y="150" width="152" height="44" rx="10" fill="white" stroke="#E5E7EB" stroke-width="1" filter="drop-shadow(0 2px 6px rgba(0,0,0,0.05))"/>
+        <rect x="10" y="152" width="0" height="0"/>
+        <rect x="40" y="160" width="60" height="7" rx="3" fill="#374151" opacity="0.14"/>
+        <rect x="40" y="171" width="44" height="6" rx="3" fill="#6B7280" opacity="0.1"/>
+        <rect x="140" y="158" width="34" height="18" rx="9" fill="#0D9488" opacity="0.85"/>
+        <rect x="147" y="163" width="20" height="8" rx="4" fill="white" opacity="0.8"/>
+        <line x1="96" y1="136" x2="96" y2="150" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="3 3"/>
+      </svg>
+    </div>
+
   </div>
 
   <!-- ──────────────────────────────────
@@ -694,7 +884,7 @@
           <div>
             <h3>For the Market</h3>
             <p>No flexible, vertical-agnostic platform handles the <em>entire</em> lifecycle: discovery → requirements → scheduling → payment → confirmation.</p>
-            <p style="margin-top:8px; font-size:12px; color:var(--muted);">Most platforms that come close charge vendors a membership fee just to be listed — putting the cost burden on the businesses before a single booking is made. EzzyBook only earns when they do.</p>
+            <p style="margin-top:8px; font-size:12px; color:var(--muted);">Most platforms that come close charge vendors a membership fee just to be listed — putting the cost burden on the businesses before a single booking is made. Ezzy only earns when they do.</p>
           </div>
         </div>
       </div>
@@ -708,13 +898,13 @@
     <div class="slide-content">
       <div class="eyebrow">The Solution</div>
       <h2>Three portals. <span class="accent-blue">One backbone.</span></h2>
-      <p style="max-width:620px; margin-top:12px;">EzzyBook is a multi-sided marketplace — each audience gets an experience built for how they actually work, sharing one identity, one payment rail, and one source of truth.</p>
+      <p style="max-width:620px; margin-top:12px;">Ezzy is a multi-sided marketplace — each audience gets an experience built for how they actually work, sharing one identity, one payment rail, and one source of truth.</p>
 
       <div class="portals-diagram">
         <div class="portal-col booker">
           <div class="portal-badge booker">Booker</div>
           <div class="fi fi-md fi-blue" style="margin-bottom:8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
-          <h3 style="color:var(--blue);">EzzyBook Booker</h3>
+          <h3 style="color:var(--blue);">Ezzy Booker</h3>
           <p>Where customers discover and book services</p>
           <ul class="portal-features">
             <li>Browse & discover vendors</li>
@@ -728,7 +918,7 @@
         <div class="portal-col vendor">
           <div class="portal-badge vendor">Vendor</div>
           <div class="fi fi-md fi-gold" style="margin-bottom:8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
-          <h3 style="color:var(--gold);">EzzyBook Vendor</h3>
+          <h3 style="color:var(--gold);">Ezzy Vendor</h3>
           <p>Where businesses run their offerings</p>
           <ul class="portal-features">
             <li>Vendor-tailored booking experience, carrying their brand</li>
@@ -743,8 +933,8 @@
         <div class="portal-col command">
           <div class="portal-badge command">Command</div>
           <div class="fi fi-md fi-coral" style="margin-bottom:8px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F04E23" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"/><polyline points="9 12 11 14 15 10"/></svg></div>
-          <h3 style="color:var(--coral);">EzzyBook Command</h3>
-          <p>Where the EzzyBook team keeps it trusted</p>
+          <h3 style="color:var(--coral);">Ezzy Command</h3>
+          <p>Where the Ezzy team keeps it trusted</p>
           <ul class="portal-features">
             <li>Vendor approval workflow</li>
             <li>User & portal access control</li>
@@ -1071,7 +1261,7 @@
     <div class="slide-content">
       <div class="eyebrow">Live Scenario — First Target Vertical</div>
       <div style="display:flex; align-items:center; gap:16px; margin-bottom: 20px;">
-        <h2>Booking a <span class="accent">Driving Lesson</span> with EzzyBook</h2>
+        <h2>Booking a <span class="accent">Driving Lesson</span> with Ezzy</h2>
         <div class="scenario-badge">🚗 Driving School</div>
       </div>
 
@@ -1162,7 +1352,7 @@
         <div class="detail-card">
           <div class="fi fi-sm fi-gold"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg></div>
           <h4 style="color:var(--gold);">Requirements Built-In</h4>
-          <p>The school sets required uploads per offering: Student Permit for practical lessons, no document for TDC. EzzyBook enforces this at step 5 — the booking cannot proceed without it.</p>
+          <p>The school sets required uploads per offering: Student Permit for practical lessons, no document for TDC. Ezzy enforces this at step 5 — the booking cannot proceed without it.</p>
         </div>
         <div class="detail-card">
           <div class="fi fi-sm fi-coral"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F04E23" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
@@ -1314,7 +1504,7 @@
           <rect x="424" y="135" width="8" height="12" rx="2" fill="#D97706" opacity="0.4"/>
           <rect x="436" y="137" width="68" height="5" rx="2" fill="#374151" opacity="0.2"/>
           <rect x="508" y="137" width="60" height="5" rx="2" fill="#6B7280" opacity="0.15"/>
-          <rect x="648" y="134" width="46" height="14" rx="7" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="0.6"/>
+          <rect x="648" y="134" width="46" height="14" rx="7" fill="#F3F4F6" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
           <rect x="656" y="138" width="30" height="6" rx="3" fill="#9CA3AF" opacity="0.6"/>
 
           <!-- Mini schedule grid -->
@@ -1388,18 +1578,18 @@
           <!-- Access control row -->
           <rect x="972" y="133" width="132" height="30" rx="5" fill="#F8FAFF" stroke="#BFDBFE" stroke-width="0.7"/>
           <text x="978" y="145" font-family="Inter,sans-serif" font-size="7.5" fill="#1D4ED8" font-weight="600">ACCESS CONTROL</text>
-          <rect x="978" y="149" width="28" height="8" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="0.6"/>
+          <rect x="978" y="149" width="28" height="8" rx="4" fill="#F0F9FF" stroke="rgba(79,142,247,0.25)" stroke-width="0.6"/>
           <rect x="978" y="152" width="20" height="4" rx="2" fill="#2563EB" opacity="0.3"/>
-          <rect x="1010" y="149" width="28" height="8" rx="4" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="0.6"/>
+          <rect x="1010" y="149" width="28" height="8" rx="4" fill="#F0F9FF" stroke="rgba(79,142,247,0.25)" stroke-width="0.6"/>
           <rect x="1040" y="149" width="28" height="8" rx="4" fill="#FEE9E3" stroke="#FBCAB8" stroke-width="0.6"/>
-          <rect x="1070" y="149" width="26" height="8" rx="4" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="0.6"/>
+          <rect x="1070" y="149" width="26" height="8" rx="4" fill="#F3F4F6" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
 
           <!-- Notification badge -->
           <rect x="972" y="170" width="132" height="38" rx="5" fill="#FFF8F6" stroke="#FBCAB8" stroke-width="0.7"/>
           <text x="978" y="182" font-family="Inter,sans-serif" font-size="7.5" fill="#9A3412" font-weight="600">NOTIFICATIONS</text>
           <rect x="978" y="185" width="56" height="16" rx="8" fill="#F04E23"/>
           <text x="1006" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" font-weight="600" fill="white">3 portals live</text>
-          <rect x="1040" y="185" width="56" height="16" rx="8" fill="#F3F4F6" stroke="#E5E7EB" stroke-width="0.6"/>
+          <rect x="1040" y="185" width="56" height="16" rx="8" fill="#F3F4F6" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
           <text x="1068" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="7.5" fill="#374151">Real-time</text>
 
           <!-- Panel label -->
@@ -1470,7 +1660,7 @@
           <circle cx="96" cy="100" r="6" fill="#F04E23"/>
           <circle cx="110" cy="100" r="6" fill="#D97706"/>
           <circle cx="124" cy="100" r="6" fill="#2563EB"/>
-          <circle cx="138" cy="100" r="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="1"/>
+          <circle cx="138" cy="100" r="6" fill="#F9FAFB" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
           <rect x="148" y="95" width="14" height="10" rx="3" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="0.8"/>
           <text x="155" y="103" text-anchor="middle" font-family="Inter,sans-serif" font-size="6" fill="#7C3AED">+</text>
 
@@ -1702,7 +1892,7 @@
     <div class="slide-content">
       <div class="eyebrow">Payments — Live on Day One</div>
       <h2>Every major local payment method, <span class="accent">already live</span></h2>
-      <p style="margin-top: 12px;">EzzyBook processes payments end-to-end via PayMongo hosted checkout — no external redirects, no manual transfer instructions.</p>
+      <p style="margin-top: 12px;">Ezzy processes payments end-to-end via PayMongo hosted checkout — no external redirects, no manual transfer instructions.</p>
 
       <div class="payment-layout">
         <div class="payment-side" style="align-items: flex-end;">
@@ -1733,7 +1923,7 @@
       </div>
 
       <div class="payment-note">
-        <strong>Commission captured automatically at checkout</strong> — EzzyBook processes the full booking amount and earns its fee at the point of payment. Vendors get paid without chasing transfers.
+        <strong>Commission captured automatically at checkout</strong> — Ezzy processes the full booking amount and earns its fee at the point of payment. Vendors get paid without chasing transfers.
       </div>
     </div>
   </div>
@@ -1873,7 +2063,7 @@
     <div class="slide-content">
       <div class="eyebrow">Business Model</div>
       <h2>Simple. Aligned. <span class="accent">Commission-based.</span></h2>
-      <p class="lead" style="margin-top:12px; text-align:center;">EzzyBook earns when vendors earn. No upfront fees, no subscriptions for vendors — a percentage of every booking, captured automatically at checkout.</p>
+      <p class="lead" style="margin-top:12px; text-align:center;">Ezzy earns when vendors earn. No upfront fees, no subscriptions for vendors — a percentage of every booking, captured automatically at checkout.</p>
 
       <div class="mono-model">
         <div class="mono-card">
@@ -1889,7 +2079,7 @@
         <div class="mono-card">
           <div class="fi fi-lg fi-teal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg></div>
           <h3>Aligned Incentives</h3>
-          <p>EzzyBook only earns when vendors get bookings. Growth is fully aligned: more bookings = more revenue for everyone.</p>
+          <p>Ezzy only earns when vendors get bookings. Growth is fully aligned: more bookings = more revenue for everyone.</p>
         </div>
       </div>
 
@@ -1960,7 +2150,7 @@
         <div class="th-badge">🏫</div>
         <div>
           <h3>Driving Schools: First Partner Vertical</h3>
-          <p>Onboarding begins with driving schools as design partners — real instructors, real sessions, real document uploads, real payments. The perfect stress-test for every layer of the EzzyBook stack.</p>
+          <p>Onboarding begins with driving schools as design partners — real instructors, real sessions, real document uploads, real payments. The perfect stress-test for every layer of the Ezzy stack.</p>
         </div>
       </div>
     </div>
@@ -2000,6 +2190,11 @@
     <p class="closing-line">"Start as the booking layer for service vendors in the Philippines — become the trusted infrastructure for bookable services across Southeast Asia."</p>
   </div>
 
+  <!-- Fixed brand header — visible on all slides except slide-1 -->
+  <div class="brand-header" id="brand-header">
+    <img src="data:image/png;base64,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" alt="Ezzy"/>
+  </div>
+
 </div><!-- /deck -->
 
 <!-- ── NAVIGATION ────────────────────── -->
@@ -2026,6 +2221,11 @@
     dotsContainer.appendChild(dot);
   });
 
+  const brandHeader = document.getElementById('brand-header');
+  function syncHeader() {
+    if (brandHeader) brandHeader.style.display = current === 0 ? 'none' : 'flex';
+  }
+
   function goTo(n) {
     slides[current].classList.remove('active');
     dotsContainer.children[current].classList.remove('active');
@@ -2033,6 +2233,7 @@
     slides[current].classList.add('active');
     dotsContainer.children[current].classList.add('active');
     counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(slides.length).padStart(2,'0')}`;
+    syncHeader();
   }
 
   document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
@@ -2043,8 +2244,9 @@
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
   });
 
-  // init counter
+  // init counter + header state
   counter.textContent = `01 / ${String(slides.length).padStart(2,'0')}`;
+  syncHeader();
 </script>
 </body>
 </html>
